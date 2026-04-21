@@ -114,14 +114,16 @@ export default function GWPConfig() {
 
   // 监听保存结果
   useEffect(() => {
-    if (fetcher.state === "idle" && fetcher.data) {
+    if (fetcher.state === "idle") {
       setIsSaving(false);
-      if (fetcher.data.success) {
-        setSyncStatus({ type: "success", message: "保存成功！" });
-      } else {
-        setSyncStatus({ type: "error", message: `保存失败: ${fetcher.data.error || '未知错误'}` });
+      if (fetcher.data) {
+        if (fetcher.data.success) {
+          setSyncStatus({ type: "success", message: "保存成功！" });
+        } else {
+          setSyncStatus({ type: "error", message: `保存失败: ${fetcher.data.error || '未知错误'}` });
+        }
+        setTimeout(() => setSyncStatus(null), 3000);
       }
-      setTimeout(() => setSyncStatus(null), 3000);
     }
   }, [fetcher.state, fetcher.data]);
 
