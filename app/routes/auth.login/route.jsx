@@ -25,37 +25,66 @@ export default function Auth() {
   const { errors } = actionData || loaderData;
 
   return (
-    <AppProvider embedded={false}>
-      <s-page>
+    <div style={{ 
+      display: "flex", 
+      justifyContent: "center", 
+      alignItems: "center", 
+      height: "100vh", 
+      backgroundColor: "#f6f6f7",
+      fontFamily: "sans-serif"
+    }}>
+      <div style={{ 
+        backgroundColor: "white", 
+        padding: "40px", 
+        borderRadius: "8px", 
+        boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+        width: "100%",
+        maxWdith: "400px"
+      }}>
+        <h2 style={{ marginBottom: "20px", fontSize: "24px", fontWeight: "600" }}>Log in</h2>
         <Form method="post">
-          <s-section heading="Log in">
-            <s-text-field
+          <div style={{ marginBottom: "20px" }}>
+            <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>
+              Shop domain
+            </label>
+            <input
               name="shop"
-              label="Shop domain"
-              details="example.myshopify.com"
+              type="text"
+              placeholder="example.myshopify.com"
               value={shop}
-              onChange={(e) => setShop(e.currentTarget.value)}
-              autocomplete="on"
-              error={errors.shop}
-            ></s-text-field>
-            <button 
-              type="submit" 
+              onChange={(e) => setShop(e.target.value)}
               style={{
-                backgroundColor: "#008060",
-                color: "white",
-                padding: "10px 20px",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-                fontWeight: "600",
-                marginTop: "10px"
+                width: "100%",
+                padding: "10px",
+                border: "1px solid #d2d5d9",
+                borderRadius: "4px",
+                fontSize: "16px"
               }}
-            >
-              Log in
-            </button>
-          </s-section>
+            />
+            {errors.shop && (
+              <p style={{ color: "#d21c1c", fontSize: "14px", marginTop: "4px" }}>
+                {errors.shop}
+              </p>
+            )}
+          </div>
+          <button 
+            type="submit" 
+            style={{
+              width: "100%",
+              backgroundColor: "#008060",
+              color: "white",
+              padding: "12px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontWeight: "600",
+              fontSize: "16px"
+            }}
+          >
+            Log in
+          </button>
         </Form>
-      </s-page>
-    </AppProvider>
+      </div>
+    </div>
   );
 }
