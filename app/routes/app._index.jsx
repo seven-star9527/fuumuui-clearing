@@ -13,7 +13,7 @@ import {
   saveCampaign,
   getFullConfig,
 } from "../lib/gwp-config.server";
-import { syncConfigToMetafield } from "../lib/functions.server";
+import { syncConfigToMetafield, ensureDiscountNodeExists } from "../lib/functions.server";
 
 // 默认阶梯配置
 const DEFAULT_TIERS = [
@@ -50,18 +50,21 @@ export const action = async ({ request }) => {
         const tiers = await saveTiers(shop, dataObj.tiers);
         const fullConfig = await getFullConfig(shop);
         await syncConfigToMetafield(admin, shop, fullConfig);
+        await ensureDiscountNodeExists(admin, shop, fullConfig.campaign?.name);
         return { success: true, tiers };
       }
       case "save_gift_rule": {
         const giftRule = await saveGiftRule(shop, dataObj);
         const fullConfig = await getFullConfig(shop);
         await syncConfigToMetafield(admin, shop, fullConfig);
+        await ensureDiscountNodeExists(admin, shop, fullConfig.campaign?.name);
         return { success: true, giftRule };
       }
       case "save_campaign": {
         const campaign = await saveCampaign(shop, dataObj);
         const fullConfig = await getFullConfig(shop);
         await syncConfigToMetafield(admin, shop, fullConfig);
+        await ensureDiscountNodeExists(admin, shop, fullConfig.campaign?.name);
         return { success: true, campaign };
       }
       default:
