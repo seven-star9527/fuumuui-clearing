@@ -68,11 +68,11 @@ export const action = async ({ request }) => {
         return { success: true, campaign };
       }
       default:
-        return data({ success: false, error: "Unknown action" }, { status: 400 });
+        return { success: false, error: "Unknown action" };
     }
   } catch (error) {
     console.error("GWP Config Action Error:", error);
-    return data({ success: false, error: error.message }, { status: 500 });
+    return { success: false, error: error.message ? error.message : String(error) };
   }
 };
 
