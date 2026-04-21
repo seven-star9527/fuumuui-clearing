@@ -6,20 +6,14 @@ import { authenticate } from "../shopify.server";
 
 export const loader = async ({ request }) => {
   await authenticate.admin(request);
-  const url = new URL(request.url);
-  const host = url.searchParams.get("host") || "";
-  
-  return { 
-    apiKey: process.env.SHOPIFY_API_KEY || "",
-    host
-  };
+  return { apiKey: process.env.SHOPIFY_API_KEY || "" };
 };
 
 export default function App() {
-  const { apiKey, host } = useLoaderData();
+  const { apiKey } = useLoaderData();
 
   return (
-    <AppProvider apiKey={apiKey} host={host} isEmbeddedApp>
+    <AppProvider apiKey={apiKey}>
       <NavMenu>
         <a href="/app" rel="home">Home</a>
         <a href="/app/gwp-config">🎁 GWP Config</a>
