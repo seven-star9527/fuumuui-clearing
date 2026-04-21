@@ -2,7 +2,7 @@
 
 client_id = "907dec52ec45b533bd65f748220e6f10"
 name = "fuumuui-clearing-inventory"
-application_url = "https://glebeless-proctological-hope.ngrok-free.dev"
+application_url = "https://fuumuui-clearing.onrender.com"
 embedded = true
 
 [build]
@@ -13,11 +13,11 @@ api_version = "2026-01"
 
   [[webhooks.subscriptions]]
   topics = [ "app/uninstalled" ]
-  uri = "https://glebeless-proctological-hope.ngrok-free.dev/webhooks/app/uninstalled"
+  uri = "https://fuumuui-clearing.onrender.com/webhooks/app/uninstalled"
 
   [[webhooks.subscriptions]]
   topics = [ "app/scopes_update" ]
-  uri = "https://glebeless-proctological-hope.ngrok-free.dev/webhooks/app/scopes_update"
+  uri = "https://fuumuui-clearing.onrender.com/webhooks/app/scopes_update"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
@@ -25,8 +25,8 @@ scopes = "write_products,write_metaobjects,write_metaobject_definitions,read_cus
 
 [auth]
 redirect_urls = [
-  "https://glebeless-proctological-hope.ngrok-free.dev/auth/callback",
-  "https://glebeless-proctological-hope.ngrok-free.dev/auth"
+  "https://fuumuui-clearing.onrender.com/auth/callback",
+  "https://fuumuui-clearing.onrender.com/auth"
 ]
 
 [product.metafields.app.demo_info]
