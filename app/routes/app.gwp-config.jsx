@@ -4,7 +4,8 @@
  */
 
 import { useState, useEffect } from "react";
-import { data, useFetcher, useLoaderData } from "react-router";
+import { data, useFetcher, useLoaderData, useRouteError } from "react-router";
+import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../shopify.server";
 import {
   saveTiers,
@@ -524,3 +525,13 @@ export default function GWPConfig() {
 export const headers = (headersArgs) => {
   return boundary.headers(headersArgs);
 };
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  return (
+    <div style={{ padding: "20px", color: "red", fontFamily: "sans-serif" }}>
+      <h2>Error Loading GWP Config</h2>
+      <pre>{error.message || JSON.stringify(error, null, 2)}</pre>
+    </div>
+  );
+}

@@ -13,7 +13,7 @@ export default function App() {
   const { apiKey } = useLoaderData();
 
   return (
-    <AppProvider apiKey={apiKey}>
+    <AppProvider apiKey={apiKey} isEmbeddedApp>
       <NavMenu>
         <a href="/app" rel="home">Home</a>
         <a href="/app/gwp-config">🎁 GWP Config</a>
