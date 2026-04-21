@@ -116,7 +116,7 @@ export default function GWPConfig() {
       if (fetcher.data.success) {
         setSyncStatus({ type: "success", message: "保存成功！" });
       } else {
-        setSyncStatus({ type: "error", message: "保存失败" });
+        setSyncStatus({ type: "error", message: `保存失败: ${fetcher.data.error || '未知错误'}` });
       }
       setTimeout(() => setSyncStatus(null), 3000);
     }
