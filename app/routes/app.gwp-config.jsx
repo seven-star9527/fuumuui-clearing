@@ -12,8 +12,8 @@ import {
   saveGiftRule,
   saveCampaign,
   getFullConfig,
-} from "~/lib/gwp-config.server";
-import { syncConfigToMetafield } from "~/lib/functions.server";
+} from "../lib/gwp-config.server";
+import { syncConfigToMetafield } from "../lib/functions.server";
 
 // 默认阶梯配置
 const DEFAULT_TIERS = [
