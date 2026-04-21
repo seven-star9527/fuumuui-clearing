@@ -5,10 +5,13 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
-import "./tailwind.css";
+import tailwindStyles from "./tailwind.css?url";
 import polarisStyles from "@shopify/polaris/build/esm/styles.css?url";
 
-export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
+export const links = () => [
+  { rel: "stylesheet", href: tailwindStyles },
+  { rel: "stylesheet", href: polarisStyles },
+];
 
 export default function App() {
   return (

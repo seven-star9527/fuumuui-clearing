@@ -6,16 +6,22 @@ import { authenticate } from "../shopify.server";
 
 export const loader = async ({ request }) => {
   await authenticate.admin(request);
+  const url = new URL(request.url);
+  const host = url.searchParams.get("host");
 
-  // eslint-disable-next-line no-undef
-  return { apiKey: process.env.SHOPIFY_API_KEY || "" };
+  return { 
+    apiKey: process.env.SHOPIFY_API_KEY || "",
+    host: host || ""
+  };
 };
 
 export default function App() {
-  const { apiKey } = useLoaderData();
+  const { apiKey, host } = useLoaderData();
 
   return (
-    <AppProvider embedded apiKey={apiKey} i18n={translations}>
+    <AppProvider embedded apiKey={apiKey} i18n={translations} host={host}>
+      <Meta />
+      <meta name="shopify-api-key" content={apiKey} />
       <s-app-nav>
         <s-link href="/app">Home</s-link>
         <s-link href="/app/additional">Additional page</s-link>
