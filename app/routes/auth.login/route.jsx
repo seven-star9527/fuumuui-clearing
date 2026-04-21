@@ -30,6 +30,13 @@ export default function Auth() {
       backgroundColor: "#f6f6f7",
       fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
     }}>
+      {/* 核心修复：如果检测到在 Iframe 中，强制顶层窗口跳转 */}
+      <script dangerouslySetInnerHTML={{ __html: `
+        if (window.top !== window.self) {
+          window.top.location.href = window.location.href;
+        }
+      `}} />
+      
       <div style={{ 
         backgroundColor: "white", 
         padding: "40px", 
