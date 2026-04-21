@@ -15,8 +15,7 @@ export default function App() {
   return (
     <AppProvider apiKey={apiKey} isEmbeddedApp>
       <NavMenu>
-        <a href="/app" rel="home">Home</a>
-        <a href="/app/gwp-config">🎁 GWP Config</a>
+        <a href="/app" rel="home">🎁 GWP Config</a>
       </NavMenu>
       <Outlet />
     </AppProvider>
