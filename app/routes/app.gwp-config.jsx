@@ -4,8 +4,7 @@
  */
 
 import { useState, useEffect } from "react";
-import { useFetcher, useLoaderData } from "react-router";
-import { json } from "react-router";
+import { data, useFetcher, useLoaderData } from "react-router";
 import { authenticate } from "../shopify.server";
 import {
   saveTiers,
@@ -43,33 +42,33 @@ export const action = async ({ request }) => {
   try {
     const formData = await request.formData();
     const actionType = formData.get("action");
-    const data = JSON.parse(formData.get("data") || "{}");
+    const dataObj = JSON.parse(formData.get("data") || "{}");
 
     switch (actionType) {
       case "save_tiers": {
-        const tiers = await saveTiers(shop, data.tiers);
+        const tiers = await saveTiers(shop, dataObj.tiers);
         const fullConfig = await getFullConfig(shop);
         await syncConfigToMetafield(admin, shop, fullConfig);
-        return json({ success: true, tiers });
+        return { success: true, tiers };
       }
       case "save_gift_rule": {
-        const giftRule = await saveGiftRule(shop, data);
+        const giftRule = await saveGiftRule(shop, dataObj);
         const fullConfig = await getFullConfig(shop);
         await syncConfigToMetafield(admin, shop, fullConfig);
-        return json({ success: true, giftRule });
+        return { success: true, giftRule };
       }
       case "save_campaign": {
-        const campaign = await saveCampaign(shop, data);
+        const campaign = await saveCampaign(shop, dataObj);
         const fullConfig = await getFullConfig(shop);
         await syncConfigToMetafield(admin, shop, fullConfig);
-        return json({ success: true, campaign });
+        return { success: true, campaign };
       }
       default:
-        return json({ success: false, error: "Unknown action" }, { status: 400 });
+        return data({ success: false, error: "Unknown action" }, { status: 400 });
     }
   } catch (error) {
     console.error("GWP Config Action Error:", error);
-    return json({ success: false, error: error.message }, { status: 500 });
+    return data({ success: false, error: error.message }, { status: 500 });
   }
 };
 
