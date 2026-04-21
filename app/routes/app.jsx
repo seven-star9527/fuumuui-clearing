@@ -1,6 +1,7 @@
 import { Outlet, useLoaderData, useRouteError } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { AppProvider } from "@shopify/shopify-app-react-router/react";
+import "@shopify/polaris/build/styles.css";
 import { authenticate } from "../shopify.server";
 
 export const loader = async ({ request }) => {
