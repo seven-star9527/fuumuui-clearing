@@ -97,12 +97,6 @@ function getAllowedGiftValue(subtotal, tiers) {
   return 0;
 }
 
-/**
- * 获取商品单价
- */
-function getLinePrice(line) {
-  return parseFloat(line.cost?.amountPerQuantity?.amount || line.merchandise?.price?.amount || "0");
-}
 
 /**
  * 核心算法：价值扣减
