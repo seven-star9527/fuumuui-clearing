@@ -5,7 +5,7 @@
 
 import { useState, useEffect } from "react";
 import { useFetcher, useLoaderData } from "react-router";
-import { json } from "@shopify/shopify-app-react-router/server";
+import { json } from "react-router";
 import { authenticate } from "../shopify.server";
 import {
   saveTiers,
