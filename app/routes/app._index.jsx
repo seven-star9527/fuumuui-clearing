@@ -8,7 +8,7 @@ import { redirect } from "react-router";
 
 export const loader = async ({ request }) => {
   await authenticate.admin(request);
-  return redirect("/app/gwp-config");
+  return null;
 };
 
 export const action = async ({ request }) => {
@@ -195,6 +195,13 @@ export default function Index() {
           .
         </s-paragraph>
         <s-stack direction="inline" gap="base">
+          <s-button
+            variant="primary"
+            onClick={() => window.location.href = "/app/gwp-config"}
+            style={{ marginRight: "12px" }}
+          >
+            🚀 Go to GWP Config (进入配置页)
+          </s-button>
           <s-button
             onClick={generateProduct}
             {...(isLoading ? { loading: true } : {})}
