@@ -38,7 +38,21 @@ export default function Auth() {
               autocomplete="on"
               error={errors.shop}
             ></s-text-field>
-            <s-button type="submit">Log in</s-button>
+            <button 
+              type="submit" 
+              style={{
+                backgroundColor: "#008060",
+                color: "white",
+                padding: "10px 20px",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+                fontWeight: "600",
+                marginTop: "10px"
+              }}
+            >
+              Log in
+            </button>
           </s-section>
         </Form>
       </s-page>
