@@ -46,15 +46,28 @@ function parseConfig(cart) {
 
 /**
  * 检查是否是赠品行
+ * 注意：Shopify Function schema 使用 hasAnyTag() 而非 tags 数组
+ * metafield 使用单数形式 metafield() 而非 metafields()
  */
 function isGiftLine(line, config) {
-  const tags = line.merchandise?.product?.tags || [];
-  if (config.useMetafield) {
-    const metafields = line.merchandise?.product?.metafields || [];
-    const giftMetafield = metafields.find(m => m?.key === config.metafieldKey);
+  const product = line.merchandise?.product;
+  if (!product) return false;
+
+  if (config?.useMetafield) {
+    // 通过 metafield 识别
+    const giftMetafield = product.metafield;
     return giftMetafield?.value === "true";
   }
-  return tags.includes(config.giftTag || DEFAULT_GIFT_TAG);
+
+  // 通过 hasAnyTag 识别（GraphQL 已经帮我们检查过了）
+  return product.hasAnyTag === true;
+}
+
+/**
+ * 获取商品单价（从 CartLineCost 获取）
+ */
+function getLinePrice(line) {
+  return parseFloat(line.cost?.amountPerQuantity?.amount || "0");
 }
 
 /**

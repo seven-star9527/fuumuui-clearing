@@ -13,13 +13,9 @@ query RunInput {
       }
       merchandise {
         ... on ProductVariant {
-          price {
-            amount
-          }
           product {
-            tags
-            metafields(identifiers: [{ namespace: "custom", key: "_is_gift" }]) {
-              key
+            hasAnyTag(tags: ["is_free_gift"])
+            metafield(namespace: "custom", key: "_is_gift") {
               value
             }
           }
