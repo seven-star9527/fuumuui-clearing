@@ -23,16 +23,24 @@ const DEFAULT_GIFT_TAG = "is_free_gift";
  * 从 Cart metafield 解析 GWP 配置
  */
 function parseConfig(cart) {
-  const metafield = cart.metafield;
+  const metafield = cart?.metafield;
   if (!metafield?.value) {
-    console.log("[GWP] No config found in cart metafield");
-    return null;
+    console.log("[GWP] No config found in cart metafield, using defaults");
+    return {
+      tiers: DEFAULT_TIERS,
+      giftRule: { giftTag: DEFAULT_GIFT_TAG, useMetafield: false, metafieldKey: "_is_gift" },
+      campaign: null,
+    };
   }
   try {
     return JSON.parse(metafield.value);
   } catch (e) {
     console.error("[GWP] Failed to parse config:", e);
-    return null;
+    return {
+      tiers: DEFAULT_TIERS,
+      giftRule: { giftTag: DEFAULT_GIFT_TAG, useMetafield: false, metafieldKey: "_is_gift" },
+      campaign: null,
+    };
   }
 }
 
@@ -121,15 +129,9 @@ function calculateDiscountTargets(giftLines, allowedValue) {
 export function run(input) {
   console.log("[GWP] Function started");
 
-  // 1. 解析配置
-  const config = parseConfig(input?.cart);
-  if (!config) {
-    console.log("[GWP] No config, returning empty");
-    return {
-      discountApplicationStrategy: DiscountApplicationStrategy.First,
-      discounts: [],
-    };
-  }
+  // 1. 从购物车读取配置（有配置用配置，没有用默认值）
+  const cart = input?.cart;
+  const config = parseConfig(cart);
 
   // 2. 检查活动是否在有效期内
   if (!isCampaignActive(config.campaign)) {
@@ -140,8 +142,7 @@ export function run(input) {
     };
   }
 
-  // 3. 获取购物车数据
-  const cart = input?.cart;
+  // 3. 校验购物车
   if (!cart || !cart.lines || cart.lines.length === 0) {
     console.log("[GWP] Empty cart");
     return {
