@@ -3,7 +3,7 @@
  * 处理阶梯配置、赠品规则、活动时间的 CRUD 操作
  */
 
-import prisma from "~/db.server";
+import prisma from "../db.server";
 
 /**
  * 获取店铺的阶梯配置
