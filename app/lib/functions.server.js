@@ -30,75 +30,60 @@ export async function syncConfigToMetafield(admin, shop, config) {
     updatedAt: new Date().toISOString(),
   });
 
-  // 查询是否已存在
-  const existing = await admin.graphql(
+  // 先查询当前店铺的真实 ID
+  const shopQuery = await admin.graphql(`
+    #graphql
+    query { shop { id } }
+  `);
+  const shopData = await shopQuery.json();
+  const shopId = shopData.data?.shop?.id;
+
+  if (!shopId) {
+    throw new Error("Could not fetch Shop ID for metafieldsSet.");
+  }
+
+  // 使用最新的 metafieldsSet API
+  const response = await admin.graphql(
     `#graphql
-    query getShopMetafield {
-      shop {
-        metafield(namespace: "${GWP_CONFIG_NAMESPACE}", key: "settings") {
-          id
+    mutation metafieldsSet($metafields: [MetafieldsSetInput!]!) {
+      metafieldsSet(metafields: $metafields) {
+        metafields {
+          key
+          namespace
+          value
+          createdAt
+          updatedAt
+        }
+        userErrors {
+          field
+          message
+          code
         }
       }
-    }`
-  );
-
-  const existingJson = await existing.json();
-  const metafieldId = existingJson?.data?.shop?.metafield?.id;
-
-  if (metafieldId) {
-    // 更新
-    const response = await admin.graphql(
-      `#graphql
-      mutation updateMetafield($id: ID!, $value: String!) {
-        metafieldUpdate(input: { id: $id, value: $value }) {
-          metafield {
-            id
-            key
-          }
-          userErrors {
-            field
-            message
-          }
-        }
-      }`,
-      {
-        variables: {
-          id: metafieldId,
-          value: configJson,
-        },
-      }
-    );
-    return response.json();
-  } else {
-    // 创建
-    const response = await admin.graphql(
-      `#graphql
-      mutation createMetafield($metafield: MetafieldInput!) {
-        metafieldCreate(input: $metafield) {
-          metafield {
-            id
-            key
-          }
-          userErrors {
-            field
-            message
-          }
-        }
-      }`,
-      {
-        variables: {
-          metafield: {
-            namespace: GWP_CONFIG_NAMESPACE,
+    }`,
+    {
+      variables: {
+        metafields: [
+          {
             key: "settings",
+            namespace: GWP_CONFIG_NAMESPACE,
+            ownerId: shopId,
             type: "json",
             value: configJson,
-            ownerType: "SHOP",
           },
-        },
-      }
-    );
-    return response.json();
+        ],
+      },
+    }
+  );
+
+  const responseJson = await response.json();
+  
+  if (responseJson.data?.metafieldsSet?.userErrors?.length > 0) {
+    console.error("Metafield Set Errors:", responseJson.data.metafieldsSet.userErrors);
+    throw new Error(responseJson.data.metafieldsSet.userErrors[0].message);
   }
+  
+  return responseJson;
 }
 
 /**
