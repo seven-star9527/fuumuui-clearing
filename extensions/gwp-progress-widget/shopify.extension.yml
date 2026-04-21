@@ -1,0 +1,31 @@
+# GWP Progress Widget - Theme App Extension
+# https://shopify.dev/docs/api/ui-extensions
+
+name: GWP Progress Widget
+handle: gwp-progress-widget
+description: 显示购物车赠品进度条和弹窗
+
+# 扩展类型
+type: ui_extension
+
+# 入口文件
+main:
+  entrypoint: src/index.tsx
+
+# 扩展点
+extensions:
+  - name: customer-account.order-status.block.render
+  - name: checkout.targeting.render-before
+  - name: checkout.cart-line-list.render-before
+
+# 构型配置
+metafields:
+  - namespace: "gwp_progress"
+    key: "settings"
+    type: "json"
+    access: "merchant_read_write"
+
+# 支持的主题
+targets:
+  - checkout
+  - customer-account

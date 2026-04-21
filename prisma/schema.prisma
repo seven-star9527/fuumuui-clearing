@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Note that some adapters may set a maximum length for the String type by default, please ensure your strings are long
+// enough when changing adapters.
+// See https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string for more information
+datasource db {
+  provider = "sqlite"
+  url      = "file:dev.sqlite"
+}
+
+model Session {
+  id            String    @id
+  shop          String
+  state         String
+  isOnline      Boolean   @default(false)
+  scope         String?
+  expires       DateTime?
+  accessToken   String
+  userId        BigInt?
+  firstName     String?
+  lastName      String?
+  email         String?
+  accountOwner  Boolean   @default(false)
+  locale        String?
+  collaborator  Boolean?  @default(false)
+  emailVerified Boolean?  @default(false)
+  refreshToken        String?
+  refreshTokenExpires DateTime?
+}
+
+// GWP 阶梯配置
+model GWPTier {
+  id          String   @id @default(cuid())
+  shop        String   // 店铺域名
+  minAmount   Float    // 最低消费金额 (USD)
+  giftValue   Float    // 赠品额度 (USD)
+  sortOrder   Int      @default(0) // 排序顺序
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([shop, minAmount])
+}
+
+// GWP 赠品规则配置
+model GWPGiftRule {
+  id              String   @id @default(cuid())
+  shop            String   // 店铺域名
+  giftTag         String   @default("is_free_gift") // 赠品识别标签
+  useMetafield    Boolean  @default(false) // 是否使用 metafield 识别
+  metafieldKey    String   @default("_is_gift") // metafield key
+  maxGiftsAllowed Int      @default(10) // 单次最大赠品数量
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([shop])
+}
+
+// GWP 活动时间配置
+model GWPCampaign {
+  id          String    @id @default(cuid())
+  shop        String    // 店铺域名
+  name        String    // 活动名称
+  startTime  DateTime  // 开始时间
+  endTime    DateTime? // 结束时间 (null = 无期限)
+  isActive   Boolean   @default(true)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@unique([shop])
+  @@index([shop, isActive])
+}
