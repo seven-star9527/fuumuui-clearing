@@ -20,7 +20,6 @@ export default function App() {
 
   return (
     <AppProvider embedded apiKey={apiKey} i18n={translations} host={host}>
-      <Meta />
       <meta name="shopify-api-key" content={apiKey} />
       <s-app-nav>
         <s-link href="/app">Home</s-link>
